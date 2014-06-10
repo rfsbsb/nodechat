@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+.chat-room {
+  background-color: #ddd;
+}
+
+.user-list,
+.talking {
+  float: left;
+}
+
+.user-list {
+  width: 15%;
+  background-color: #C5EBFF;
+  min-height: 500px;
+}
+
+.talking {
+  width: 85%;
+  min-height: 500px;
+}
+
+.command-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.message-box {
+  width: 90%;
+  float: left;
+}
