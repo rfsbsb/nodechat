@@ -8,12 +8,16 @@ eval(fs.readFileSync('../shared/person-model.js')+'');
 
 
 var people = [];
+var clientId = 0;
 
 wss.on('connection', function(ws) {
+  var thisId = ++clientId;
+
   ws.on('message', function(msg) {
     var data = JSON.parse(msg);
+
     if (data.proto == "send") {
-      postMessage(data);
+      postMessage(thisId, data);
     }
 
     if (data.proto == "list") {
@@ -22,33 +26,65 @@ wss.on('connection', function(ws) {
     }
 
     if (data.proto == "open") {
-      var person = getPersonByName(data.person.name);
+      var person = getPerson(thisId, data.person.name);
       person.setMessage(person.name + " enters in the room...");
+      var message = {proto: "list", "people":people};
+      wss.broadcast(JSON.stringify(message));
     }
 
   });
+
+  ws.on('close', function(){
+    var personInArray = people.filter(function(person){
+      return person.id != thisId;
+    });
+    people = personInArray;
+  });
+
+
 });
 
-function postMessage(data) {
-  var person = getPersonByName(data.person.name);
+function postMessage(id, data) {
+  var person = getPerson(id, data.person.name);
   person.setMessage(data.person.message);
   var data = {proto: "send", "person": person};
   wss.broadcast(JSON.stringify(data));
 }
 
-function getPersonByName(personName) {
+function getPerson(id, personName) {
+  var person = getPersonById(id);
+
+  if (!person) {
+    var num = getNameOccurrences(personName);
+    if (num >= 1) {
+      person = new ChatPerson(personName + " " + (num + 1));
+    } else {
+      person = new ChatPerson(personName);
+    }
+    person.id = id;
+    people.push(person);
+  }
+
+  return person;
+}
+
+function getNameOccurrences(personName) {
   var personInArray = people.filter(function(person){
     var pattern = new RegExp("^" + personName + "([0-9 ]*)?$", "gi");
     return pattern.test(person.name);
   });
+  return personInArray.length;
+}
+
+function getPersonById(id) {
+  var personInArray = people.filter(function(person){
+    return person.id == id;
+  });
 
   var person = null;
-  if (personInArray.length > 0) {
-    person = new ChatPerson(personName + " " + (personInArray.length + 1));
-    people.push(person);
-  } else {
-    person = new ChatPerson(personName);
-    people.push(person);
+
+  if (personInArray.length == 1) {
+    return personInArray[0];
   }
 
   return person;

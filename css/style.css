@@ -1,6 +1,11 @@
 * {
   box-sizing: border-box;
 }
+
+body {
+  font-family: "verdana";
+}
+
 .chat-room {
   background-color: #ddd;
 }
@@ -16,9 +21,15 @@
   min-height: 500px;
 }
 
+.user-list ul{
+  list-style: none;
+  padding: 0 0 0 10px;
+}
+
 .talking {
   width: 85%;
   min-height: 500px;
+  padding: 15px;
 }
 
 .command-bar {
@@ -30,4 +41,12 @@
 .message-box {
   width: 90%;
   float: left;
+}
+
+.message-item {
+  padding: 5px 0;
+}
+
+.message-item .person-name {
+  padding: 0 5px;
 }

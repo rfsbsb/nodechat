@@ -1,6 +1,7 @@
 var ChatClient = function(personName) {
   this.ws = new WebSocket("ws://10.200.111.131:8080/");
   this.personName = personName;
+  this.view = new ChatView();
   var self = this;
 
   this.ws.onopen = function() {
@@ -19,11 +20,11 @@ var ChatClient = function(personName) {
   }
 
   this.showMessage = function(data) {
-    console.log("Person " + data.person.name + " said " + data.person.message);
+    this.view.drawNewMessage(data.person);
   }
 
   this.assebleListUsers = function(data) {
-    console.log(data.people);
+    this.view.drawList(data.people);
   }
 
   this.sendMessage = function(message) {

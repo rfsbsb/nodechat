@@ -10,16 +10,20 @@ $(document).ready(function(){
 
   // Starting chat client
   var personName = prompt("Please enter your name", "John doe");
-  chat = new ChatClient(personName);
+  if (personName) {
+    chat = new ChatClient(personName);
+    $(".command-bar").on("click", ".send-message", function(){
+      var message = $(".message-box").val();
+      var messageIsBlank = (!message || /^\s*$/.test(message));
+      if (!messageIsBlank) {
+        chat.sendMessage(message);
+        $(".message-box").val("");
+      }
+      return false;
+    });
+  }
 
-  $(".command-bar").on("click", ".send-message", function(){
-    var message = $(".message-box").val();
-    var messageIsBlank = (!message || /^\s*$/.test(message));
-    if (!messageIsBlank) {
-      chat.sendMessage(message);
-      $(".message-box").val("");
-    }
-    return false;
-  });
+
+
 
 });
