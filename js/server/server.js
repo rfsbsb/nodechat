@@ -21,15 +21,13 @@ wss.on('connection', function(ws) {
     }
 
     if (data.proto == "list") {
-      var message = {proto: "list", "people":people};
-      ws.send(JSON.stringify(message));
+      sendList();
     }
 
     if (data.proto == "open") {
       var person = getPerson(thisId, data.person.name);
       person.setMessage(person.name + " enters in the room...");
-      var message = {proto: "list", "people":people};
-      wss.broadcast(JSON.stringify(message));
+      sendList();
     }
 
   });
@@ -39,10 +37,17 @@ wss.on('connection', function(ws) {
       return person.id != thisId;
     });
     people = personInArray;
+    sendList();
   });
 
 
 });
+
+
+function sendList() {
+  var message = {proto: "list", "people":people};
+  wss.broadcast(JSON.stringify(message));
+}
 
 function postMessage(id, data) {
   var person = getPerson(id, data.person.name);
@@ -57,7 +62,7 @@ function getPerson(id, personName) {
   if (!person) {
     var num = getNameOccurrences(personName);
     if (num >= 1) {
-      person = new ChatPerson(personName + " " + (num + 1));
+      person = new ChatPerson(personName + " " + id);
     } else {
       person = new ChatPerson(personName);
     }
