@@ -1,5 +1,5 @@
 var ChatClient = function(personName) {
-  this.ws = new WebSocket("ws://10.200.111.131:8080/");
+  this.ws = new WebSocket("ws://localhost:8080/");
   this.personName = personName;
   this.view = new ChatView();
   var self = this;

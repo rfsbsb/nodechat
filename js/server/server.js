@@ -6,7 +6,6 @@ var WebSocketServer = require('ws').Server
 var fs = require('fs');
 eval(fs.readFileSync('../shared/person-model.js')+'');
 
-
 var people = [];
 var clientId = 0;
 
@@ -26,7 +25,8 @@ wss.on('connection', function(ws) {
 
     if (data.proto == "open") {
       var person = getPerson(thisId, data.person.name);
-      person.setMessage(person.name + " enters in the room...");
+      person.setMessage("enters the room...");
+      postMessage(thisId, {person:person});
       sendList();
     }
 
@@ -39,8 +39,6 @@ wss.on('connection', function(ws) {
     people = personInArray;
     sendList();
   });
-
-
 });
 
 

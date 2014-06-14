@@ -7,7 +7,7 @@ var ChatView = function() {
   }
 
   this.createMessageElement = function(person) {
-    $(this.messageContainer).append('<div class="message-item"><span class="person-name">' + person.name + '</span>  says: <span class="message">' + person.message + "</span></div>");
+    $(this.messageContainer).append('<div class="message-item"><span class="person-name">' + person.name + '</span> <span class="message">' + person.message + "</span></div>");
   }
 
   this.drawList = function(list) {

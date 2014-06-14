@@ -18,7 +18,6 @@ body {
 .user-list {
   width: 15%;
   background-color: #C5EBFF;
-  min-height: 500px;
 }
 
 .user-list ul{
@@ -28,8 +27,8 @@ body {
 
 .talking {
   width: 85%;
-  min-height: 500px;
   padding: 15px;
+  overflow: scroll;
 }
 
 .command-bar {
