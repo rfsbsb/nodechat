@@ -28,7 +28,7 @@ body {
 .talking {
   width: 85%;
   padding: 15px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .command-bar {
